@@ -1,0 +1,78 @@
+# dEssentials: Things a servers needs in one easy package!
+# --- ITEMS: Commands related to the item system.
+# See dEssentials-Core.yml for information
+
+dessentials_command_itemdb:
+    type: command
+    debug: false
+    name: itemdb
+    description: Shows information on the held item, or a specified item.
+    usage: /itemdb [item]
+    permission: denizen.essentials.user.itemdb
+    script:
+    - if <context.server> && <context.args.size> != 1 {
+      - narrate "<&c>This command is for players only."
+      - narrate "<&c>Available for the server<&co> /itemdb <&lt>item<&gt>"
+      - queue clear
+      }
+    - define item <player.item_in_hand>
+    - if <context.args.size> == 1 {
+      - define item i@<context.args.get[1]>
+      }
+    - if <def[item].is[==].to[null]> || <def[item].material.name||null> == null {
+      - narrate "<&c>Unknown item."
+      - queue clear
+      }
+    - narrate "<&6>Item<&f><&co> <&b><def[item].material.name>"
+    - narrate "<&6>Internal name<&f><&co> <&b><def[item].material.bukkit_enum>"
+    - narrate "<&6>Full Denizen descriptor<&f><&co> <&b><def[item]>"
+    - narrate "<&6>Data values<&f><&co> <&b><def[item].id><&f><&co><&b><def[item].data>"
+
+dessentials_command_item:
+    type: command
+    debug: false
+    name: item
+    description: Gives an item.
+    usage: /item <&lt>item<&gt>
+    permission: denizen.essentials.admin.item
+    aliases:
+    - i
+    script:
+    - if <context.server> {
+      - narrate "<&c>This command is for players only."
+      - queue clear
+      }
+    - if <context.args.size> < 1 {
+      - narrate "<&c>/item <&lt>item<&gt>"
+      - queue clear
+      }
+    - define item "i@<context.raw_args>"
+    - if <def[item].material.name||null> == null {
+      - narrate "<&c>Unknown item."
+      - queue clear
+      }
+    - adjust <def[item]> quantity:1 save:myitem
+    - narrate "<&2>Giving <&b><def[item].qty><&2> of <&b><entry[myitem].result><&2>."
+    - give <def[item]>
+
+dessentials_command_invsee:
+    type: command
+    debug: false
+    name: invsee
+    description: Shows the inventory of another player.
+    usage: /invess <&lt>player<&gt>
+    permission: denizen.essentials.admin.invsee
+    script:
+    # TODO
+    - narrate "This command is a stub."
+
+dessentials_command_endersee:
+    type: command
+    debug: false
+    name: endersee
+    description: Shows the enderchest of another player.
+    usage: /endersee <&lt>player<&gt>
+    permission: denizen.essentials.admin.endersee
+    script:
+    # TODO
+    - narrate "This command is a stub."
